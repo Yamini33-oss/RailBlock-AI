@@ -1,0 +1,26 @@
+[
+  {
+    "check_timestamp_utc": "2026-10-14T05:50:56.034082+00:00",
+    "dry_run": true,
+    "forced": false,
+    "updates_detected_or_applied": 0,
+    "reprocessing_status": "SKIPPED_NO_UPDATES",
+    "events": [
+      {
+        "dataset_id": "ir_stations_master",
+        "status": "UPDATE_AVAILABLE_DRY_RUN",
+        "reason": "SIZE_CHANGED (1864683 -> 280865)"
+      },
+      {
+        "dataset_id": "ir_trains_master",
+        "status": "UPDATE_AVAILABLE_DRY_RUN",
+        "reason": "SIZE_CHANGED (14768598 -> 2597587)"
+      },
+      {
+        "dataset_id": "ir_schedules_master",
+        "status": "UPDATE_AVAILABLE_DRY_RUN",
+        "reason": "SIZE_CHANGED (82174280 -> 14081003)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,322 @@
+{
+  "preprocessing_version": "1.0.0",
+  "processed_at": "2026-10-14T05:48:13.740003+00:00",
+  "total_elapsed_seconds": 8.55,
+  "datasets": {
+    "stations": {
+      "dataset": "stations_processed.csv",
+      "rows": 8990,
+      "columns": 7,
+      "file_size_bytes": 607530,
+      "duplicates_removed": 0,
+      "column_stats": {
+        "station_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8990
+        },
+        "station_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8937
+        },
+        "state": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 31
+        },
+        "zone": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 19
+        },
+        "address": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 2725
+        },
+        "latitude": {
+          "dtype": "float64",
+          "null_count": 293,
+          "null_percentage": 3.26,
+          "unique_count": 8689
+        },
+        "longitude": {
+          "dtype": "float64",
+          "null_count": 293,
+          "null_percentage": 3.26,
+          "unique_count": 8686
+        }
+      }
+    },
+    "trains": {
+      "dataset": "trains_processed.csv",
+      "rows": 5208,
+      "columns": 13,
+      "file_size_bytes": 539496,
+      "duplicates_removed": 0,
+      "column_stats": {
+        "train_number": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 5208
+        },
+        "train_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 3948
+        },
+        "train_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 17
+        },
+        "zone": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 19
+        },
+        "from_station_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 724
+        },
+        "from_station_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 720
+        },
+        "to_station_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 730
+        },
+        "to_station_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 727
+        },
+        "departure_time": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 350
+        },
+        "arrival_time": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 370
+        },
+        "duration_hours": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 73
+        },
+        "duration_minutes": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 54
+        },
+        "distance_km": {
+          "dtype": "float64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 1153
+        }
+      }
+    },
+    "schedules": {
+      "dataset": "schedules_processed.csv",
+      "rows": 417080,
+      "columns": 8,
+      "file_size_bytes": 32098147,
+      "duplicates_removed": 0,
+      "column_stats": {
+        "stop_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 417080
+        },
+        "train_number": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 5208
+        },
+        "train_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 3948
+        },
+        "station_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8539
+        },
+        "station_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8495
+        },
+        "day": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 13
+        },
+        "arrival_time": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 1441
+        },
+        "departure_time": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 1441
+        }
+      }
+    },
+    "track_sections": {
+      "dataset": "track_sections_processed.csv",
+      "rows": 8,
+      "columns": 9,
+      "file_size_bytes": 650,
+      "duplicates_removed": 0,
+      "column_stats": {
+        "track_section_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8
+        },
+        "section_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8
+        },
+        "from_station_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8
+        },
+        "to_station_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8
+        },
+        "zone": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 5
+        },
+        "distance_km": {
+          "dtype": "float64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 7
+        },
+        "is_electrified": {
+          "dtype": "bool",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 1
+        },
+        "tracks": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 3
+        },
+        "max_speed_kmh": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 3
+        }
+      }
+    },
+    "traffic_density": {
+      "dataset": "section_traffic_density_processed.csv",
+      "rows": 192,
+      "columns": 8,
+      "file_size_bytes": 15654,
+      "duplicates_removed": 0,
+      "column_stats": {
+        "track_section_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 8
+        },
+        "hour_of_day": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 24
+        },
+        "start_time_offset": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 24
+        },
+        "end_time_offset": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 24
+        },
+        "scheduled_train_count": {
+          "dtype": "int64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 33
+        },
+        "traffic_density_score": {
+          "dtype": "float64",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 96
+        },
+        "density_category": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 3
+        },
+        "derivation_source": {
+          "dtype": "str",
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_count": 1
+        }
+      }
+    }
+  }
+}

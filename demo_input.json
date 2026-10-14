@@ -1,0 +1,13 @@
+{
+  "request_id": "MR-DEMO-001",
+  "track_section_id": "SEC-01",
+  "planning_start": "2026-10-15T08:00:00+05:30",
+  "planning_end": "2026-10-15T18:00:00+05:30",
+  "required_duration_minutes": 60,
+  "maintenance_priority": "HIGH",
+  "required_resources": [
+    "TRACK_TEAM_A"
+  ],
+  "earliest_start_time": "2026-10-15T09:00:00+05:30",
+  "latest_end_time": "2026-10-15T17:00:00+05:30"
+}

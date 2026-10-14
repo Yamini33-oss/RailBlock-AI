@@ -1,0 +1,9 @@
+track_section_id,section_name,from_station_code,to_station_code,zone,distance_km,is_electrified,tracks,max_speed_kmh
+SEC-NDLS-MTJ,New Delhi - Mathura Jn,NDLS,MTJ,NR/NCR,141.0,True,3,130
+SEC-MTJ-AGC,Mathura Jn - Agra Cantt,MTJ,AGC,NCR,54.0,True,3,130
+SEC-AGC-GWL,Agra Cantt - Gwalior Jn,AGC,GWL,NCR,118.0,True,2,120
+SEC-GWL-JHS,Gwalior Jn - VGLB Jhansi,GWL,JHS,NCR,97.0,True,2,120
+SEC-JHS-BPL,VGLB Jhansi - Bhopal Jn,JHS,BPL,NCR/WCR,292.0,True,2,120
+SEC-HWH-BWN,Howrah - Barddhaman Jn,HWH,BWN,ER,107.0,True,4,130
+SEC-BWN-ASN,Barddhaman - Asansol Jn,BWN,ASN,ER,106.0,True,3,130
+SEC-CSMT-KYN,Mumbai CSMT - Kalyan Jn,CSMT,KYN,CR,54.0,True,4,110

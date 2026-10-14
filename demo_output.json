@@ -1,0 +1,85 @@
+{
+  "status": "RECOMMENDED",
+  "request_id": "MR-DEMO-001",
+  "recommendation": {
+    "track_section_id": "SEC-01",
+    "start_time": "2026-10-15T11:00:00+05:30",
+    "end_time": "2026-10-15T12:00:00+05:30",
+    "duration_minutes": 60
+  },
+  "estimated_impact": {
+    "affected_train_count": 0,
+    "predicted_delay_minutes": 0.45,
+    "traffic_density": 0.15,
+    "affected_trains": []
+  },
+  "validation": {
+    "status": "VALID",
+    "reason": "No operational headway or interlocking conflicts detected by Member 4 validator.",
+    "validator_used": "MockMember4Validator",
+    "validation_attempts": 1
+  },
+  "alternatives": [
+    {
+      "rank": 1,
+      "candidate_id": "CW-010",
+      "start_time": "2026-10-15T11:15:00+05:30",
+      "end_time": "2026-10-15T12:15:00+05:30",
+      "duration_minutes": 60,
+      "objective_score": 0.045,
+      "affected_train_count": 0,
+      "predicted_delay_minutes": 0.45,
+      "traffic_density": 0.15,
+      "validation_status": "VALIDATION_PENDING"
+    },
+    {
+      "rank": 2,
+      "candidate_id": "CW-011",
+      "start_time": "2026-10-15T11:30:00+05:30",
+      "end_time": "2026-10-15T12:30:00+05:30",
+      "duration_minutes": 60,
+      "objective_score": 0.0465,
+      "affected_train_count": 0,
+      "predicted_delay_minutes": 0.45,
+      "traffic_density": 0.15,
+      "validation_status": "VALIDATION_PENDING"
+    },
+    {
+      "rank": 3,
+      "candidate_id": "CW-012",
+      "start_time": "2026-10-15T11:45:00+05:30",
+      "end_time": "2026-10-15T12:45:00+05:30",
+      "duration_minutes": 60,
+      "objective_score": 0.048,
+      "affected_train_count": 0,
+      "predicted_delay_minutes": 0.45,
+      "traffic_density": 0.15,
+      "validation_status": "VALIDATION_PENDING"
+    },
+    {
+      "rank": 4,
+      "candidate_id": "CW-013",
+      "start_time": "2026-10-15T12:00:00+05:30",
+      "end_time": "2026-10-15T13:00:00+05:30",
+      "duration_minutes": 60,
+      "objective_score": 0.0495,
+      "affected_train_count": 0,
+      "predicted_delay_minutes": 0.45,
+      "traffic_density": 0.15,
+      "validation_status": "VALIDATION_PENDING"
+    }
+  ],
+  "rejected_candidates": [],
+  "explanation": [
+    "Recommended maintenance block on section SEC-01 from 2026-10-15 11:00 to 2026-10-15 12:00 (60 minutes).",
+    "Optimization score is 0.0435 (predicted disruption delay: 0.5 mins, affected trains: 0, traffic density: 0.15).",
+    "Candidate CW-009 (11:00-12:00) passed operational validation.",
+    "Solution mathematically proven OPTIMAL by Google OR-Tools CP-SAT in 0.004s."
+  ],
+  "solver": {
+    "status": "OPTIMAL",
+    "objective_score": 0.0435,
+    "wall_time_seconds": 0.0044,
+    "is_optimal": true
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "validation_version": "1.0.0",
+  "validated_at": "2026-10-14T05:49:55.718845+00:00",
+  "overall_status": "PASSED",
+  "datasets": {
+    "stations": {
+      "dataset": "stations_processed.csv",
+      "passed": true,
+      "row_count": 8990,
+      "column_count": 7,
+      "missing_columns": [],
+      "null_station_codes": 0,
+      "empty_station_codes": 0,
+      "duplicate_codes": 0,
+      "unique_zones": 18,
+      "unique_states": 30
+    },
+    "trains": {
+      "dataset": "trains_processed.csv",
+      "passed": true,
+      "row_count": 5208,
+      "column_count": 13,
+      "missing_columns": [],
+      "null_train_numbers": 0,
+      "duplicate_train_numbers": 0,
+      "time_format_errors": 15,
+      "unique_train_types": [
+        "EXP",
+        "PASS",
+        "RAJ",
+        "SF",
+        "DEMU",
+        "JSHTB",
+        "GR",
+        "MEMU"
+      ]
+    },
+    "schedules": {
+      "dataset": "schedules_processed.csv",
+      "passed": true,
+      "row_count": 417080,
+      "column_count": 8,
+      "missing_columns": [],
+      "null_stop_ids": 0,
+      "duplicate_stops": 0,
+      "total_referenced_trains": 5208,
+      "total_referenced_stations": 8539,
+      "unknown_stations_count": 0,
+      "unknown_trains_count": 0
+    },
+    "traffic_density": {
+      "dataset": "section_traffic_density_processed.csv",
+      "passed": true,
+      "row_count": 192,
+      "column_count": 8,
+      "missing_columns": [],
+      "score_range_valid": true,
+      "categories_valid": true,
+      "monitored_sections_count": 8
+    }
+  }
+}
