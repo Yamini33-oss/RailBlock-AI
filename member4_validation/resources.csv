@@ -1,0 +1,6 @@
+resource_name,available
+Maintenance Team,true
+Repair Equipment,true
+Safety Team,true
+Inspection Team,false
+Heavy Crane,false
