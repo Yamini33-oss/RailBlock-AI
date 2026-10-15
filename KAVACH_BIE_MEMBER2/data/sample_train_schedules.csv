@@ -1,0 +1,36 @@
+train_number,train_name,source,destination,track_section,scheduled_arrival,scheduled_departure,scheduled_running_time_minutes
+12002,Bhopal Shatabdi Express,NDLS,BPL,SEC_NDLS_CNB,06:00,10:15,255
+12004,Lucknow Swarna Shatabdi,NDLS,LKO,SEC_NDLS_CNB,06:10,11:20,310
+22436,Vande Bharat Express,NDLS,BSB,SEC_NDLS_CNB,06:00,10:08,248
+22436,Vande Bharat Express,CNB,BSB,SEC_CNB_PRYJ,10:12,12:15,123
+12302,Howrah Rajdhani Express,NDLS,HWH,SEC_NDLS_CNB,16:55,21:35,280
+12302,Howrah Rajdhani Express,CNB,PRYJ,SEC_CNB_PRYJ,21:40,23:45,125
+12802,Purushottam Express,NDLS,PURI,SEC_NDLS_CNB,22:40,04:00,320
+12802,Purushottam Express,CNB,PRYJ,SEC_CNB_PRYJ,04:05,06:30,145
+12394,Sampoorna Kranti Express,NDLS,RJPB,SEC_NDLS_CNB,17:30,22:25,295
+12394,Sampoorna Kranti Express,CNB,PRYJ,SEC_CNB_PRYJ,22:30,00:45,135
+FRT_501,Container Freight Shuttle,TKD,CNB,SEC_NDLS_CNB,01:15,07:30,375
+FRT_502,Mineral Freight Rake,PRYJ,CNB,SEC_CNB_PRYJ,02:00,05:45,225
+12951,Mumbai Tejas Rajdhani,MMCT,NDLS,SEC_BCT_ST,17:00,19:43,163
+12953,August Kranti Rajdhani,MMCT,NZM,SEC_BCT_ST,17:10,20:00,170
+12009,Mumbai Ahmedabad Shatabdi,MMCT,ADI,SEC_BCT_ST,06:20,09:22,182
+20901,Vande Bharat Express,MMCT,GNC,SEC_BCT_ST,06:00,08:35,155
+12925,Paschim SF Express,MMCT,ASR,SEC_BCT_ST,11:25,14:45,200
+12903,Golden Temple Mail,MMCT,ASR,SEC_BCT_ST,18:45,22:10,205
+FRT_601,Automobile Freight Express,JNPT,ST,SEC_BCT_ST,02:30,07:15,285
+12019,Howrah Ranchi Shatabdi,HWH,RNC,SEC_HWH_ASN,06:05,08:50,165
+12303,Poorva Superfast Express,HWH,NDLS,SEC_HWH_ASN,08:00,10:55,175
+12313,Sealdah Rajdhani Express,SDAH,NDLS,SEC_HWH_ASN,16:50,19:35,165
+12321,Howrah Mumbai Mail,HWH,CSMT,SEC_HWH_ASN,23:35,02:40,185
+FRT_701,Coal Rake Dedicated Freight,HWH,ASN,SEC_HWH_ASN,00:30,04:30,240
+FRT_702,Steel Coil Freight Special,ASN,HWH,SEC_HWH_ASN,13:00,17:15,255
+20608,Vande Bharat Express,MYS,MAS,SEC_SBC_MAS,14:45,19:20,275
+12028,Shatabdi Express,SBC,MAS,SEC_SBC_MAS,06:00,11:00,300
+12610,Chennai Intercity SF,SBC,MAS,SEC_SBC_MAS,08:00,14:15,375
+12658,Chennai Mail Express,SBC,MAS,SEC_SBC_MAS,22:40,04:20,340
+FRT_801,Auto Component Parcel Express,WFD,TRL,SEC_SBC_MAS,01:00,06:30,330
+12555,Gorakhdham SF Express,GKP,BTI,SEC_GKP_BST,16:35,17:40,65
+12556,Gorakhdham SF Express,BTI,GKP,SEC_GKP_BST,08:25,09:45,80
+15004,Chauri Chaura Express,GKP,CPA,SEC_GKP_BST,23:20,00:35,75
+15007,Krishak Express,BCY,LJN,SEC_GKP_BST,01:45,03:10,85
+FRT_901,Foodgrain Freight Rake,GKP,BST,SEC_GKP_BST,11:00,13:00,120

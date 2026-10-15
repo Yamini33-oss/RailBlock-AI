@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-10-14T11:41:27.641063",
+  "overall_status": "HEALTHY",
+  "audits": {
+    "delays": {
+      "dataset_name": "delays",
+      "status": "VALID",
+      "total_rows": 2100,
+      "total_columns": 9,
+      "duplicate_rows": 0,
+      "missing_values_per_column": {},
+      "columns": [
+        "train_number",
+        "train_name",
+        "service_date",
+        "track_section",
+        "scheduled_arrival",
+        "actual_arrival",
+        "scheduled_departure",
+        "actual_departure",
+        "historical_delay_minutes"
+      ]
+    },
+    "schedules": {
+      "dataset_name": "schedules",
+      "status": "VALID",
+      "total_rows": 35,
+      "total_columns": 8,
+      "duplicate_rows": 0,
+      "missing_values_per_column": {},
+      "columns": [
+        "train_number",
+        "train_name",
+        "source",
+        "destination",
+        "track_section",
+        "scheduled_arrival",
+        "scheduled_departure",
+        "scheduled_running_time_minutes"
+      ]
+    },
+    "traffic": {
+      "dataset_name": "traffic",
+      "status": "VALID",
+      "total_rows": 1800,
+      "total_columns": 6,
+      "duplicate_rows": 0,
+      "missing_values_per_column": {},
+      "columns": [
+        "track_section",
+        "observation_date",
+        "time_period",
+        "traffic_density",
+        "scheduled_train_count",
+        "track_utilization"
+      ]
+    },
+    "maintenance": {
+      "dataset_name": "maintenance",
+      "status": "VALID",
+      "total_rows": 13,
+      "total_columns": 7,
+      "duplicate_rows": 0,
+      "missing_values_per_column": {},
+      "columns": [
+        "request_id",
+        "track_section",
+        "requested_date",
+        "proposed_start_time",
+        "proposed_end_time",
+        "required_duration_minutes",
+        "maintenance_priority"
+      ]
+    }
+  }
+}
