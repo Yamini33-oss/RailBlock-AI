@@ -1,0 +1,2 @@
+request_id,track_section,requested_date,start_time,end_time,duration_minutes,priority,required_resources,status
+6900d383,TPTY-RU,2026-10-20,10:00,12:30,150,High,"Workers, Tools, Safety equipment",Pending
