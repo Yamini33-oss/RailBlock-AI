@@ -1,0 +1,50 @@
+{
+  "manifest_version": "1.0.0",
+  "generated_at": "2026-10-14T05:24:35.233963+00:00",
+  "total_downloads": 3,
+  "successful_downloads": 3,
+  "records": [
+    {
+      "dataset_id": "ir_stations_master",
+      "name": "Indian Railways Stations Master Directory",
+      "target_file": "data\\raw\\stations_raw.json",
+      "source_url": "https://github.com/datameet/railways",
+      "download_url": "https://raw.githubusercontent.com/datameet/railways/master/stations.json",
+      "retrieved_at_utc": "2026-10-14T05:24:23.447394+00:00",
+      "status": "SUCCESS",
+      "file_size_bytes": 1864683,
+      "file_size_mb": 1.778,
+      "download_duration_seconds": 1.05,
+      "sha256": "9bd5e1da3a859e5359a95f40b6009aa468efb177da4faac57ffdcd7daeb4df18",
+      "http_status": 200
+    },
+    {
+      "dataset_id": "ir_trains_master",
+      "name": "Indian Railways Train Services Master Registry",
+      "target_file": "data\\raw\\trains_raw.json",
+      "source_url": "https://github.com/datameet/railways",
+      "download_url": "https://raw.githubusercontent.com/datameet/railways/master/trains.json",
+      "retrieved_at_utc": "2026-10-14T05:24:24.937733+00:00",
+      "status": "SUCCESS",
+      "file_size_bytes": 14768598,
+      "file_size_mb": 14.084,
+      "download_duration_seconds": 1.47,
+      "sha256": "e434d9c56016ccdf2291ccd446586ef87a7fab101084efa5f68871ab27800167",
+      "http_status": 200
+    },
+    {
+      "dataset_id": "ir_schedules_master",
+      "name": "Indian Railways Train Halts & Route Schedules",
+      "target_file": "data\\raw\\schedules_raw.json",
+      "source_url": "https://github.com/datameet/railways",
+      "download_url": "https://raw.githubusercontent.com/datameet/railways/master/schedules.json",
+      "retrieved_at_utc": "2026-10-14T05:24:35.233949+00:00",
+      "status": "SUCCESS",
+      "file_size_bytes": 82174280,
+      "file_size_mb": 78.368,
+      "download_duration_seconds": 10.23,
+      "sha256": "105d63816acb177eac30a7d156eb2d312625a42ddebd273edee810d2989878ec",
+      "http_status": 200
+    }
+  ]
+}
