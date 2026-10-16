@@ -1,0 +1,783 @@
+{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "KAVACH BIE â?? Member 3 AI Block Planning and Optimization Engine",
+                 "description":  "Automated railway maintenance block scheduling via Google OR-Tools CP-SAT.",
+                 "version":  "1.0.0"
+             },
+    "paths":  {
+                  "/api/optimization/health":  {
+                                                   "get":  {
+                                                               "tags":  [
+                                                                            "Member 3 â?? AI Block Planning \u0026 Optimization Engine"
+                                                                        ],
+                                                               "summary":  "Health Check",
+                                                               "description":  "Health check for Member 3 Optimization Engine and OR-Tools availability.",
+                                                               "operationId":  "health_check_api_optimization_health_get",
+                                                               "responses":  {
+                                                                                 "200":  {
+                                                                                             "description":  "Successful Response",
+                                                                                             "content":  {
+                                                                                                             "application/json":  {
+                                                                                                                                      "schema":  {
+                                                                                                                                                     "additionalProperties":  true,
+                                                                                                                                                     "type":  "object",
+                                                                                                                                                     "title":  "Response Health Check Api Optimization Health Get"
+                                                                                                                                                 }
+                                                                                                                                  }
+                                                                                                         }
+                                                                                         }
+                                                                             }
+                                                           }
+                                               },
+                  "/api/optimization/recommend":  {
+                                                      "post":  {
+                                                                   "tags":  [
+                                                                                "Member 3 â?? AI Block Planning \u0026 Optimization Engine"
+                                                                            ],
+                                                                   "summary":  "Recommend optimal maintenance block window",
+                                                                   "description":  "Generate, evaluate, optimize, and validate maintenance block windows.\n\nApplies Google OR-Tools CP-SAT constraint programming, calls Member 2\u0027s delay predictor,\nand submits the best candidates to Member 4\u0027s operational validator.",
+                                                                   "operationId":  "recommend_maintenance_window_api_optimization_recommend_post",
+                                                                   "requestBody":  {
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "$ref":  "#/components/schemas/OptimizationApiRequest"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   },
+                                                                                       "required":  true
+                                                                                   },
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "Successful Response",
+                                                                                                 "content":  {
+                                                                                                                 "application/json":  {
+                                                                                                                                          "schema":  {
+                                                                                                                                                         "$ref":  "#/components/schemas/OptimizationResponse"
+                                                                                                                                                     }
+                                                                                                                                      }
+                                                                                                             }
+                                                                                             },
+                                                                                     "422":  {
+                                                                                                 "description":  "Validation Error",
+                                                                                                 "content":  {
+                                                                                                                 "application/json":  {
+                                                                                                                                          "schema":  {
+                                                                                                                                                         "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                     }
+                                                                                                                                      }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               }
+                                                  }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "AlternativeWindow":  {
+                                                                 "properties":  {
+                                                                                    "rank":  {
+                                                                                                 "type":  "integer",
+                                                                                                 "title":  "Rank"
+                                                                                             },
+                                                                                    "candidate_id":  {
+                                                                                                         "type":  "string",
+                                                                                                         "title":  "Candidate Id"
+                                                                                                     },
+                                                                                    "start_time":  {
+                                                                                                       "type":  "string",
+                                                                                                       "format":  "date-time",
+                                                                                                       "title":  "Start Time"
+                                                                                                   },
+                                                                                    "end_time":  {
+                                                                                                     "type":  "string",
+                                                                                                     "format":  "date-time",
+                                                                                                     "title":  "End Time"
+                                                                                                 },
+                                                                                    "duration_minutes":  {
+                                                                                                             "type":  "integer",
+                                                                                                             "title":  "Duration Minutes"
+                                                                                                         },
+                                                                                    "objective_score":  {
+                                                                                                            "type":  "number",
+                                                                                                            "title":  "Objective Score"
+                                                                                                        },
+                                                                                    "affected_train_count":  {
+                                                                                                                 "type":  "integer",
+                                                                                                                 "title":  "Affected Train Count"
+                                                                                                             },
+                                                                                    "predicted_delay_minutes":  {
+                                                                                                                    "type":  "number",
+                                                                                                                    "title":  "Predicted Delay Minutes"
+                                                                                                                },
+                                                                                    "traffic_density":  {
+                                                                                                            "type":  "number",
+                                                                                                            "title":  "Traffic Density"
+                                                                                                        },
+                                                                                    "validation_status":  {
+                                                                                                              "anyOf":  [
+                                                                                                                            {
+                                                                                                                                "$ref":  "#/components/schemas/ValidationStatus"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type":  "null"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                          }
+                                                                                },
+                                                                 "type":  "object",
+                                                                 "required":  [
+                                                                                  "rank",
+                                                                                  "candidate_id",
+                                                                                  "start_time",
+                                                                                  "end_time",
+                                                                                  "duration_minutes",
+                                                                                  "objective_score",
+                                                                                  "affected_train_count",
+                                                                                  "predicted_delay_minutes",
+                                                                                  "traffic_density"
+                                                                              ],
+                                                                 "title":  "AlternativeWindow",
+                                                                 "description":  "Ranked alternative maintenance window."
+                                                             },
+                                       "HTTPValidationError":  {
+                                                                   "properties":  {
+                                                                                      "detail":  {
+                                                                                                     "items":  {
+                                                                                                                   "$ref":  "#/components/schemas/ValidationError"
+                                                                                                               },
+                                                                                                     "type":  "array",
+                                                                                                     "title":  "Detail"
+                                                                                                 }
+                                                                                  },
+                                                                   "type":  "object",
+                                                                   "title":  "HTTPValidationError"
+                                                               },
+                                       "ImpactSummary":  {
+                                                             "properties":  {
+                                                                                "affected_train_count":  {
+                                                                                                             "type":  "integer",
+                                                                                                             "title":  "Affected Train Count"
+                                                                                                         },
+                                                                                "predicted_delay_minutes":  {
+                                                                                                                "anyOf":  [
+                                                                                                                              {
+                                                                                                                                  "type":  "number"
+                                                                                                                              },
+                                                                                                                              {
+                                                                                                                                  "type":  "null"
+                                                                                                                              }
+                                                                                                                          ],
+                                                                                                                "title":  "Predicted Delay Minutes"
+                                                                                                            },
+                                                                                "traffic_density":  {
+                                                                                                        "anyOf":  [
+                                                                                                                      {
+                                                                                                                          "type":  "number"
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                          "type":  "null"
+                                                                                                                      }
+                                                                                                                  ],
+                                                                                                        "title":  "Traffic Density"
+                                                                                                    },
+                                                                                "affected_trains":  {
+                                                                                                        "items":  {
+                                                                                                                      "type":  "string"
+                                                                                                                  },
+                                                                                                        "type":  "array",
+                                                                                                        "title":  "Affected Trains"
+                                                                                                    }
+                                                                            },
+                                                             "type":  "object",
+                                                             "required":  [
+                                                                              "affected_train_count"
+                                                                          ],
+                                                             "title":  "ImpactSummary",
+                                                             "description":  "Estimated operational impact of the recommended window."
+                                                         },
+                                       "ObjectiveWeights":  {
+                                                                "properties":  {
+                                                                                   "weight_delay":  {
+                                                                                                        "type":  "number",
+                                                                                                        "minimum":  0.0,
+                                                                                                        "title":  "Weight Delay",
+                                                                                                        "description":  "Weight for predicted train delay",
+                                                                                                        "default":  0.4
+                                                                                                    },
+                                                                                   "weight_trains":  {
+                                                                                                         "type":  "number",
+                                                                                                         "minimum":  0.0,
+                                                                                                         "title":  "Weight Trains",
+                                                                                                         "description":  "Weight for number of affected trains",
+                                                                                                         "default":  0.3
+                                                                                                     },
+                                                                                   "weight_traffic_density":  {
+                                                                                                                  "type":  "number",
+                                                                                                                  "minimum":  0.0,
+                                                                                                                  "title":  "Weight Traffic Density",
+                                                                                                                  "description":  "Weight for section traffic density",
+                                                                                                                  "default":  0.15
+                                                                                                              },
+                                                                                   "weight_slack_duration":  {
+                                                                                                                 "type":  "number",
+                                                                                                                 "minimum":  0.0,
+                                                                                                                 "title":  "Weight Slack Duration",
+                                                                                                                 "description":  "Weight for excess duration over required",
+                                                                                                                 "default":  0.05
+                                                                                                             },
+                                                                                   "weight_priority_urgency":  {
+                                                                                                                   "type":  "number",
+                                                                                                                   "minimum":  0.0,
+                                                                                                                   "title":  "Weight Priority Urgency",
+                                                                                                                   "description":  "Weight for scheduling urgency based on priority",
+                                                                                                                   "default":  0.1
+                                                                                                               }
+                                                                               },
+                                                                "type":  "object",
+                                                                "title":  "ObjectiveWeights",
+                                                                "description":  "Configurable weights for multi-objective candidate scoring.\n\nWeights are normalized internally so they sum to 1.0."
+                                                            },
+                                       "OptimizationApiRequest":  {
+                                                                      "properties":  {
+                                                                                         "request_id":  {
+                                                                                                            "type":  "string",
+                                                                                                            "title":  "Request Id",
+                                                                                                            "description":  "Unique maintenance request ID (e.g. \u0027MR-001\u0027)"
+                                                                                                        },
+                                                                                         "track_section_id":  {
+                                                                                                                  "type":  "string",
+                                                                                                                  "title":  "Track Section Id",
+                                                                                                                  "description":  "Track section identifier (e.g. \u0027SEC-01\u0027)"
+                                                                                                              },
+                                                                                         "planning_start":  {
+                                                                                                                "type":  "string",
+                                                                                                                "title":  "Planning Start",
+                                                                                                                "description":  "ISO datetime string for horizon start"
+                                                                                                            },
+                                                                                         "planning_end":  {
+                                                                                                              "type":  "string",
+                                                                                                              "title":  "Planning End",
+                                                                                                              "description":  "ISO datetime string for horizon end"
+                                                                                                          },
+                                                                                         "required_duration_minutes":  {
+                                                                                                                           "type":  "integer",
+                                                                                                                           "exclusiveMinimum":  0.0,
+                                                                                                                           "title":  "Required Duration Minutes",
+                                                                                                                           "description":  "Required block duration in minutes"
+                                                                                                                       },
+                                                                                         "maintenance_priority":  {
+                                                                                                                      "type":  "string",
+                                                                                                                      "title":  "Maintenance Priority",
+                                                                                                                      "description":  "LOW, MEDIUM, HIGH, EMERGENCY",
+                                                                                                                      "default":  "MEDIUM"
+                                                                                                                  },
+                                                                                         "required_resources":  {
+                                                                                                                    "items":  {
+                                                                                                                                  "type":  "string"
+                                                                                                                              },
+                                                                                                                    "type":  "array",
+                                                                                                                    "title":  "Required Resources",
+                                                                                                                    "description":  "List of required resource IDs"
+                                                                                                                },
+                                                                                         "earliest_start_time":  {
+                                                                                                                     "anyOf":  [
+                                                                                                                                   {
+                                                                                                                                       "type":  "string"
+                                                                                                                                   },
+                                                                                                                                   {
+                                                                                                                                       "type":  "null"
+                                                                                                                                   }
+                                                                                                                               ],
+                                                                                                                     "title":  "Earliest Start Time",
+                                                                                                                     "description":  "Optional earliest start"
+                                                                                                                 },
+                                                                                         "latest_end_time":  {
+                                                                                                                 "anyOf":  [
+                                                                                                                               {
+                                                                                                                                   "type":  "string"
+                                                                                                                               },
+                                                                                                                               {
+                                                                                                                                   "type":  "null"
+                                                                                                                               }
+                                                                                                                           ],
+                                                                                                                 "title":  "Latest End Time",
+                                                                                                                 "description":  "Optional latest end"
+                                                                                                             },
+                                                                                         "task_dependencies":  {
+                                                                                                                   "anyOf":  [
+                                                                                                                                 {
+                                                                                                                                     "items":  {
+                                                                                                                                                   "type":  "string"
+                                                                                                                                               },
+                                                                                                                                     "type":  "array"
+                                                                                                                                 },
+                                                                                                                                 {
+                                                                                                                                     "type":  "null"
+                                                                                                                                 }
+                                                                                                                             ],
+                                                                                                                   "title":  "Task Dependencies"
+                                                                                                               },
+                                                                                         "existing_approved_blocks":  {
+                                                                                                                          "anyOf":  [
+                                                                                                                                        {
+                                                                                                                                            "items":  {
+                                                                                                                                                          "additionalProperties":  true,
+                                                                                                                                                          "type":  "object"
+                                                                                                                                                      },
+                                                                                                                                            "type":  "array"
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "type":  "null"
+                                                                                                                                        }
+                                                                                                                                    ],
+                                                                                                                          "title":  "Existing Approved Blocks"
+                                                                                                                      },
+                                                                                         "train_data":  {
+                                                                                                            "anyOf":  [
+                                                                                                                          {
+                                                                                                                              "items":  {
+                                                                                                                                            "additionalProperties":  true,
+                                                                                                                                            "type":  "object"
+                                                                                                                                        },
+                                                                                                                              "type":  "array"
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                              "type":  "null"
+                                                                                                                          }
+                                                                                                                      ],
+                                                                                                            "title":  "Train Data"
+                                                                                                        },
+                                                                                         "traffic_data":  {
+                                                                                                              "anyOf":  [
+                                                                                                                            {
+                                                                                                                                "items":  {
+                                                                                                                                              "additionalProperties":  true,
+                                                                                                                                              "type":  "object"
+                                                                                                                                          },
+                                                                                                                                "type":  "array"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type":  "null"
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                              "title":  "Traffic Data"
+                                                                                                          },
+                                                                                         "resource_data":  {
+                                                                                                               "anyOf":  [
+                                                                                                                             {
+                                                                                                                                 "items":  {
+                                                                                                                                               "additionalProperties":  true,
+                                                                                                                                               "type":  "object"
+                                                                                                                                           },
+                                                                                                                                 "type":  "array"
+                                                                                                                             },
+                                                                                                                             {
+                                                                                                                                 "type":  "null"
+                                                                                                                             }
+                                                                                                                         ],
+                                                                                                               "title":  "Resource Data"
+                                                                                                           },
+                                                                                         "section_data":  {
+                                                                                                              "anyOf":  [
+                                                                                                                            {
+                                                                                                                                "items":  {
+                                                                                                                                              "additionalProperties":  true,
+                                                                                                                                              "type":  "object"
+                                                                                                                                          },
+                                                                                                                                "type":  "array"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type":  "null"
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                              "title":  "Section Data"
+                                                                                                          },
+                                                                                         "config":  {
+                                                                                                        "anyOf":  [
+                                                                                                                      {
+                                                                                                                          "$ref":  "#/components/schemas/PlanningConfig"
+                                                                                                                      },
+                                                                                                                      {
+                                                                                                                          "type":  "null"
+                                                                                                                      }
+                                                                                                                  ]
+                                                                                                    }
+                                                                                     },
+                                                                      "type":  "object",
+                                                                      "required":  [
+                                                                                       "request_id",
+                                                                                       "track_section_id",
+                                                                                       "planning_start",
+                                                                                       "planning_end",
+                                                                                       "required_duration_minutes"
+                                                                                   ],
+                                                                      "title":  "OptimizationApiRequest",
+                                                                      "description":  "Payload sent by Member 5 backend to trigger block optimization."
+                                                                  },
+                                       "OptimizationResponse":  {
+                                                                    "properties":  {
+                                                                                       "status":  {
+                                                                                                      "$ref":  "#/components/schemas/OptimizationStatus",
+                                                                                                      "description":  "Overall optimization outcome"
+                                                                                                  },
+                                                                                       "request_id":  {
+                                                                                                          "type":  "string",
+                                                                                                          "title":  "Request Id",
+                                                                                                          "description":  "Request identifier"
+                                                                                                      },
+                                                                                       "recommendation":  {
+                                                                                                              "anyOf":  [
+                                                                                                                            {
+                                                                                                                                "$ref":  "#/components/schemas/RecommendationDetail"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "type":  "null"
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                              "description":  "Recommended window, present if status == RECOMMENDED"
+                                                                                                          },
+                                                                                       "estimated_impact":  {
+                                                                                                                "anyOf":  [
+                                                                                                                              {
+                                                                                                                                  "$ref":  "#/components/schemas/ImpactSummary"
+                                                                                                                              },
+                                                                                                                              {
+                                                                                                                                  "type":  "null"
+                                                                                                                              }
+                                                                                                                          ],
+                                                                                                                "description":  "Impact metrics for the recommended window"
+                                                                                                            },
+                                                                                       "validation":  {
+                                                                                                          "anyOf":  [
+                                                                                                                        {
+                                                                                                                            "$ref":  "#/components/schemas/ValidationSummary"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "type":  "null"
+                                                                                                                        }
+                                                                                                                    ],
+                                                                                                          "description":  "Member 4 validation outcome"
+                                                                                                      },
+                                                                                       "alternatives":  {
+                                                                                                            "items":  {
+                                                                                                                          "$ref":  "#/components/schemas/AlternativeWindow"
+                                                                                                                      },
+                                                                                                            "type":  "array",
+                                                                                                            "title":  "Alternatives",
+                                                                                                            "description":  "Ranked alternative feasible windows"
+                                                                                                        },
+                                                                                       "rejected_candidates":  {
+                                                                                                                   "items":  {
+                                                                                                                                 "$ref":  "#/components/schemas/RejectedCandidateSummary"
+                                                                                                                             },
+                                                                                                                   "type":  "array",
+                                                                                                                   "title":  "Rejected Candidates",
+                                                                                                                   "description":  "Sample of rejected candidates and reasons"
+                                                                                                               },
+                                                                                       "explanation":  {
+                                                                                                           "items":  {
+                                                                                                                         "type":  "string"
+                                                                                                                     },
+                                                                                                           "type":  "array",
+                                                                                                           "title":  "Explanation",
+                                                                                                           "description":  "Human-readable decision rationale"
+                                                                                                       },
+                                                                                       "solver":  {
+                                                                                                      "anyOf":  [
+                                                                                                                    {
+                                                                                                                        "$ref":  "#/components/schemas/SolverMetadata"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "type":  "null"
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                      "description":  "Mathematical solver details"
+                                                                                                  }
+                                                                                   },
+                                                                    "type":  "object",
+                                                                    "required":  [
+                                                                                     "status",
+                                                                                     "request_id"
+                                                                                 ],
+                                                                    "title":  "OptimizationResponse",
+                                                                    "description":  "Top-level response model returned by Member 3 Optimization Engine.\n\nAdheres strictly to the requested schema contract for integration with Member 5."
+                                                                },
+                                       "OptimizationStatus":  {
+                                                                  "type":  "string",
+                                                                  "enum":  [
+                                                                               "RECOMMENDED",
+                                                                               "NO_FEASIBLE_WINDOW",
+                                                                               "INVALID_REQUEST",
+                                                                               "PREDICTION_UNAVAILABLE",
+                                                                               "VALIDATION_UNAVAILABLE",
+                                                                               "VALIDATION_ERROR",
+                                                                               "OPTIMIZATION_ERROR"
+                                                                           ],
+                                                                  "title":  "OptimizationStatus",
+                                                                  "description":  "Overall status of the optimization and validation process."
+                                                              },
+                                       "PlanningConfig":  {
+                                                              "properties":  {
+                                                                                 "step_minutes":  {
+                                                                                                      "type":  "integer",
+                                                                                                      "exclusiveMinimum":  0.0,
+                                                                                                      "title":  "Step Minutes",
+                                                                                                      "description":  "Interval in minutes to shift candidate start times",
+                                                                                                      "default":  15
+                                                                                                  },
+                                                                                 "max_validation_attempts":  {
+                                                                                                                 "type":  "integer",
+                                                                                                                 "minimum":  1.0,
+                                                                                                                 "title":  "Max Validation Attempts",
+                                                                                                                 "description":  "Max candidate alternatives to test with Member 4",
+                                                                                                                 "default":  5
+                                                                                                             },
+                                                                                 "solver_time_limit_seconds":  {
+                                                                                                                   "type":  "number",
+                                                                                                                   "exclusiveMinimum":  0.0,
+                                                                                                                   "title":  "Solver Time Limit Seconds",
+                                                                                                                   "description":  "Time limit for OR-Tools CP-SAT solver",
+                                                                                                                   "default":  10.0
+                                                                                                               },
+                                                                                 "max_alternatives":  {
+                                                                                                          "type":  "integer",
+                                                                                                          "minimum":  0.0,
+                                                                                                          "title":  "Max Alternatives",
+                                                                                                          "description":  "Maximum number of ranked alternative windows to return",
+                                                                                                          "default":  5
+                                                                                                      },
+                                                                                 "weights":  {
+                                                                                                 "$ref":  "#/components/schemas/ObjectiveWeights"
+                                                                                             },
+                                                                                 "default_timezone":  {
+                                                                                                          "type":  "string",
+                                                                                                          "title":  "Default Timezone",
+                                                                                                          "description":  "Default timezone for naive demo inputs",
+                                                                                                          "default":  "Asia/Kolkata"
+                                                                                                      },
+                                                                                 "allow_unvalidated_fallback":  {
+                                                                                                                    "type":  "boolean",
+                                                                                                                    "title":  "Allow Unvalidated Fallback",
+                                                                                                                    "description":  "Whether to recommend with VALIDATION_UNAVAILABLE when Member 4 is unreachable",
+                                                                                                                    "default":  false
+                                                                                                                }
+                                                                             },
+                                                              "type":  "object",
+                                                              "title":  "PlanningConfig",
+                                                              "description":  "Runtime configuration for candidate generation and solver behavior."
+                                                          },
+                                       "RecommendationDetail":  {
+                                                                    "properties":  {
+                                                                                       "track_section_id":  {
+                                                                                                                "type":  "string",
+                                                                                                                "title":  "Track Section Id"
+                                                                                                            },
+                                                                                       "start_time":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "date-time",
+                                                                                                          "title":  "Start Time"
+                                                                                                      },
+                                                                                       "end_time":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time",
+                                                                                                        "title":  "End Time"
+                                                                                                    },
+                                                                                       "duration_minutes":  {
+                                                                                                                "type":  "integer",
+                                                                                                                "title":  "Duration Minutes"
+                                                                                                            }
+                                                                                   },
+                                                                    "type":  "object",
+                                                                    "required":  [
+                                                                                     "track_section_id",
+                                                                                     "start_time",
+                                                                                     "end_time",
+                                                                                     "duration_minutes"
+                                                                                 ],
+                                                                    "title":  "RecommendationDetail",
+                                                                    "description":  "Recommended maintenance block details."
+                                                                },
+                                       "RejectedCandidateSummary":  {
+                                                                        "properties":  {
+                                                                                           "candidate_id":  {
+                                                                                                                "type":  "string",
+                                                                                                                "title":  "Candidate Id"
+                                                                                                            },
+                                                                                           "start_time":  {
+                                                                                                              "type":  "string",
+                                                                                                              "format":  "date-time",
+                                                                                                              "title":  "Start Time"
+                                                                                                          },
+                                                                                           "end_time":  {
+                                                                                                            "type":  "string",
+                                                                                                            "format":  "date-time",
+                                                                                                            "title":  "End Time"
+                                                                                                        },
+                                                                                           "reasons":  {
+                                                                                                           "items":  {
+                                                                                                                         "type":  "string"
+                                                                                                                     },
+                                                                                                           "type":  "array",
+                                                                                                           "title":  "Reasons"
+                                                                                                       }
+                                                                                       },
+                                                                        "type":  "object",
+                                                                        "required":  [
+                                                                                         "candidate_id",
+                                                                                         "start_time",
+                                                                                         "end_time",
+                                                                                         "reasons"
+                                                                                     ],
+                                                                        "title":  "RejectedCandidateSummary",
+                                                                        "description":  "Summary of rejected candidates and failure reasons."
+                                                                    },
+                                       "SolverMetadata":  {
+                                                              "properties":  {
+                                                                                 "status":  {
+                                                                                                "$ref":  "#/components/schemas/SolverStatus"
+                                                                                            },
+                                                                                 "objective_score":  {
+                                                                                                         "anyOf":  [
+                                                                                                                       {
+                                                                                                                           "type":  "number"
+                                                                                                                       },
+                                                                                                                       {
+                                                                                                                           "type":  "null"
+                                                                                                                       }
+                                                                                                                   ],
+                                                                                                         "title":  "Objective Score"
+                                                                                                     },
+                                                                                 "wall_time_seconds":  {
+                                                                                                           "anyOf":  [
+                                                                                                                         {
+                                                                                                                             "type":  "number"
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "type":  "null"
+                                                                                                                         }
+                                                                                                                     ],
+                                                                                                           "title":  "Wall Time Seconds"
+                                                                                                       },
+                                                                                 "is_optimal":  {
+                                                                                                    "type":  "boolean",
+                                                                                                    "title":  "Is Optimal",
+                                                                                                    "default":  false
+                                                                                                }
+                                                                             },
+                                                              "type":  "object",
+                                                              "required":  [
+                                                                               "status"
+                                                                           ],
+                                                              "title":  "SolverMetadata",
+                                                              "description":  "Google OR-Tools solver execution details."
+                                                          },
+                                       "SolverStatus":  {
+                                                            "type":  "string",
+                                                            "enum":  [
+                                                                         "OPTIMAL",
+                                                                         "FEASIBLE",
+                                                                         "INFEASIBLE",
+                                                                         "MODEL_INVALID",
+                                                                         "TIMEOUT",
+                                                                         "NOT_SOLVED"
+                                                                     ],
+                                                            "title":  "SolverStatus",
+                                                            "description":  "Google OR-Tools CP-SAT solver termination status."
+                                                        },
+                                       "ValidationError":  {
+                                                               "properties":  {
+                                                                                  "loc":  {
+                                                                                              "items":  {
+                                                                                                            "anyOf":  [
+                                                                                                                          {
+                                                                                                                              "type":  "string"
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                              "type":  "integer"
+                                                                                                                          }
+                                                                                                                      ]
+                                                                                                        },
+                                                                                              "type":  "array",
+                                                                                              "title":  "Location"
+                                                                                          },
+                                                                                  "msg":  {
+                                                                                              "type":  "string",
+                                                                                              "title":  "Message"
+                                                                                          },
+                                                                                  "type":  {
+                                                                                               "type":  "string",
+                                                                                               "title":  "Error Type"
+                                                                                           },
+                                                                                  "input":  {
+                                                                                                "title":  "Input"
+                                                                                            },
+                                                                                  "ctx":  {
+                                                                                              "type":  "object",
+                                                                                              "title":  "Context"
+                                                                                          }
+                                                                              },
+                                                               "type":  "object",
+                                                               "required":  [
+                                                                                "loc",
+                                                                                "msg",
+                                                                                "type"
+                                                                            ],
+                                                               "title":  "ValidationError"
+                                                           },
+                                       "ValidationStatus":  {
+                                                                "type":  "string",
+                                                                "enum":  [
+                                                                             "VALID",
+                                                                             "CONFLICT",
+                                                                             "VALIDATION_PENDING",
+                                                                             "VALIDATION_UNAVAILABLE",
+                                                                             "VALIDATION_ERROR"
+                                                                         ],
+                                                                "title":  "ValidationStatus",
+                                                                "description":  "Operational validation status returned by Member 4."
+                                                            },
+                                       "ValidationSummary":  {
+                                                                 "properties":  {
+                                                                                    "status":  {
+                                                                                                   "$ref":  "#/components/schemas/ValidationStatus"
+                                                                                               },
+                                                                                    "reason":  {
+                                                                                                   "anyOf":  [
+                                                                                                                 {
+                                                                                                                     "type":  "string"
+                                                                                                                 },
+                                                                                                                 {
+                                                                                                                     "type":  "null"
+                                                                                                                 }
+                                                                                                             ],
+                                                                                                   "title":  "Reason"
+                                                                                               },
+                                                                                    "validator_used":  {
+                                                                                                           "anyOf":  [
+                                                                                                                         {
+                                                                                                                             "type":  "string"
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "type":  "null"
+                                                                                                                         }
+                                                                                                                     ],
+                                                                                                           "title":  "Validator Used"
+                                                                                                       },
+                                                                                    "validation_attempts":  {
+                                                                                                                "type":  "integer",
+                                                                                                                "title":  "Validation Attempts",
+                                                                                                                "default":  0
+                                                                                                            }
+                                                                                },
+                                                                 "type":  "object",
+                                                                 "required":  [
+                                                                                  "status"
+                                                                              ],
+                                                                 "title":  "ValidationSummary",
+                                                                 "description":  "Member 4 conflict validation summary."
+                                                             }
+                                   }
+                   }
+}

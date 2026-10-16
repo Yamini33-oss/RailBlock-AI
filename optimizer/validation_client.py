@@ -1,22 +1,17 @@
-"""Conflict validation client and adapter for Member 4 integration.
 
-Connects to Member 4's operational validation engine to verify candidate blocks
-against live headway, signaling, station interlocking, and operational rules.
-Provides a clearly labeled mock validator for testing and development.
-"""
+"""Conflict validation client and adapter for Member 4 integration."""
 
 from __future__ import annotations
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, List, Optional
 
 import requests
 
 from optimizer.exceptions import ValidationServiceError
 from optimizer.schemas import (
     CandidateEvaluation,
-    ValidationRequest,
     ValidationResult,
     ValidationStatus,
 )
@@ -25,23 +20,18 @@ logger = logging.getLogger(__name__)
 
 
 class ConflictValidationInterface(ABC):
-    """Abstract interface for Member 4 operational conflict validation."""
+    """Interface for Member 4 conflict validation."""
 
     @abstractmethod
     def validate_candidate(
-        self,
-        candidate_eval: CandidateEvaluation,
+        self, candidate_eval: CandidateEvaluation
     ) -> ValidationResult:
-        """Validate a proposed maintenance block candidate against operational constraints."""
+        """Validate a proposed maintenance window."""
         pass
 
 
 class MockMember4Validator(ConflictValidationInterface):
-    """Explicitly labeled test double for Member 4 conflict validation.
-
-    WARNING: This is a synthetic mock validator for development and testing only.
-    It does NOT provide official railway safety certification or live operational validation.
-    """
+    """Test-only mock validator."""
 
     def __init__(
         self,
@@ -49,7 +39,9 @@ class MockMember4Validator(ConflictValidationInterface):
         rejected_candidate_ids: Optional[List[str]] = None,
         simulate_unavailable: bool = False,
         simulate_error: bool = False,
-        custom_rule_fn: Optional[Callable[[CandidateEvaluation], ValidationResult]] = None,
+        custom_rule_fn: Optional[
+            Callable[[CandidateEvaluation], ValidationResult]
+        ] = None,
     ) -> None:
         self.max_allowed_affected_trains = max_allowed_affected_trains
         self.rejected_candidate_ids = set(rejected_candidate_ids or [])
@@ -59,8 +51,7 @@ class MockMember4Validator(ConflictValidationInterface):
         self.validation_calls: List[str] = []
 
     def validate_candidate(
-        self,
-        candidate_eval: CandidateEvaluation,
+        self, candidate_eval: CandidateEvaluation
     ) -> ValidationResult:
         self.validation_calls.append(candidate_eval.candidate_id)
 
@@ -68,100 +59,179 @@ class MockMember4Validator(ConflictValidationInterface):
             return ValidationResult(
                 candidate_id=candidate_eval.candidate_id,
                 status=ValidationStatus.VALIDATION_UNAVAILABLE,
-                reason="Member 4 conflict detection service is currently unreachable.",
-                validator_name="MockMember4Validator (Simulated Unavailable)",
+                reason="Member 4 validation service is unreachable.",
+                validator_name="MockMember4Validator",
             )
 
         if self.simulate_error:
             raise ValidationServiceError(
-                "Member 4 validation service raised an internal communication error.",
+                "Simulated Member 4 communication error.",
                 details={"candidate_id": candidate_eval.candidate_id},
             )
 
         if self.custom_rule_fn is not None:
             return self.custom_rule_fn(candidate_eval)
 
-        # Check explicit reject list
         if candidate_eval.candidate_id in self.rejected_candidate_ids:
             return ValidationResult(
                 candidate_id=candidate_eval.candidate_id,
                 status=ValidationStatus.CONFLICT,
-                reason=f"Operational conflict on section {candidate_eval.track_section_id}: Candidate {candidate_eval.candidate_id} rejected by rule.",
-                conflict_details=[f"Simulated conflict for {candidate_eval.candidate_id}"],
+                reason="Candidate rejected by the mock validation rule.",
+                conflict_details=[
+                    f"Simulated conflict for {candidate_eval.candidate_id}"
+                ],
                 validator_name="MockMember4Validator",
             )
 
-        # Check affected train threshold
-        if candidate_eval.affected_train_count > self.max_allowed_affected_trains:
-            conflicting_trains = candidate_eval.affected_trains
+        if (
+            candidate_eval.affected_train_count
+            > self.max_allowed_affected_trains
+        ):
             return ValidationResult(
                 candidate_id=candidate_eval.candidate_id,
                 status=ValidationStatus.CONFLICT,
                 reason=(
-                    f"Operational conflict: {candidate_eval.affected_train_count} affected trains "
-                    f"exceeds maximum allowed threshold ({self.max_allowed_affected_trains})."
+                    "Affected train count exceeds the mock validator's "
+                    f"limit of {self.max_allowed_affected_trains}."
                 ),
-                conflict_details=conflicting_trains,
+                conflict_details=candidate_eval.affected_trains,
                 validator_name="MockMember4Validator",
             )
 
         return ValidationResult(
             candidate_id=candidate_eval.candidate_id,
             status=ValidationStatus.VALID,
-            reason="No operational headway or interlocking conflicts detected by Member 4 validator.",
+            reason="Passed mock validation only.",
             validator_name="MockMember4Validator",
         )
 
 
 class Member4HTTPClient(ConflictValidationInterface):
-    """Production HTTP client to communicate with Member 4's FastAPI validation microservice."""
+    """HTTP client for Member 4's FastAPI validation service."""
 
     def __init__(
         self,
-        base_url: str = "http://localhost:8004",
-        endpoint: str = "/api/validation/validate",
+        base_url: str = "http://127.0.0.1:8004",
+        endpoint: str = "/validate",
         timeout_seconds: float = 5.0,
+        required_resources: Optional[List[str]] = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
-        self.endpoint = endpoint
+        self.endpoint = "/" + endpoint.lstrip("/")
         self.timeout_seconds = timeout_seconds
+        self.required_resources = (
+            required_resources
+            if required_resources is not None
+            else ["Maintenance Team"]
+        )
 
     def validate_candidate(
-        self,
-        candidate_eval: CandidateEvaluation,
+        self, candidate_eval: CandidateEvaluation
     ) -> ValidationResult:
         url = f"{self.base_url}{self.endpoint}"
+
         payload = {
-            "candidate_id": candidate_eval.candidate_id,
-            "track_section_id": candidate_eval.track_section_id,
-            "start_time": candidate_eval.start_time.isoformat(),
-            "end_time": candidate_eval.end_time.isoformat(),
-            "duration_minutes": candidate_eval.duration_minutes,
-            "affected_trains": candidate_eval.affected_trains,
+            "track_section": candidate_eval.track_section_id,
+            "start_time": candidate_eval.start_time.strftime(
+                "%Y-%m-%d %H:%M"
+            ),
+            "end_time": candidate_eval.end_time.strftime(
+                "%Y-%m-%d %H:%M"
+            ),
+            "required_duration_minutes": candidate_eval.duration_minutes,
+            "required_resources": self.required_resources,
         }
 
         try:
-            resp = requests.post(url, json=payload, timeout=self.timeout_seconds)
-            if resp.status_code == 200:
-                data = resp.json()
-                status_str = data.get("status", "VALID")
+            response = requests.post(
+                url,
+                json=payload,
+                headers={"Accept": "application/json"},
+                timeout=self.timeout_seconds,
+            )
+
+            try:
+                data: Any = response.json()
+            except ValueError:
+                data = {"message": response.text}
+
+            if response.status_code == 200:
+                if isinstance(data, dict):
+                    status_value = str(data.get("status", "")).upper()
+
+                    raw_reasons = data.get("reasons", [])
+                    if isinstance(raw_reasons, list):
+                        reasons = raw_reasons
+                    elif raw_reasons:
+                        reasons = [str(raw_reasons)]
+                    else:
+                        reasons = []
+
+                    reason = (
+                        data.get("reason")
+                        or "; ".join(str(item) for item in reasons)
+                        or data.get("message")
+                        or "Member 4 returned a response."
+                    )
+
+                    conflict_details = (
+                        data.get("conflict_details") or reasons or None
+                    )
+
+                    validator_name = data.get(
+                        "validator_name", "Member4HTTPService"
+                    )
+                else:
+                    status_value = ""
+                    reason = str(data)
+                    conflict_details = None
+                    validator_name = "Member4HTTPService"
+
+                # Do not silently accept an unknown or missing status.
+                try:
+                    validation_status = ValidationStatus(status_value)
+                except ValueError:
+                    validation_status = ValidationStatus.VALIDATION_ERROR
+                    reason = (
+                        f"Unrecognized or missing Member 4 status "
+                        f"'{status_value}'. Response: {reason}"
+                    )
+
                 return ValidationResult(
                     candidate_id=candidate_eval.candidate_id,
-                    status=ValidationStatus(status_str),
-                    reason=data.get("reason"),
-                    conflict_details=data.get("conflict_details"),
-                    validator_name=data.get("validator_name", "Member4HTTPService"),
+                    status=validation_status,
+                    reason=str(reason),
+                    conflict_details=conflict_details,
+                    validator_name=validator_name,
                 )
-            else:
-                logger.error("Member 4 service returned HTTP %d: %s", resp.status_code, resp.text)
-                return ValidationResult(
-                    candidate_id=candidate_eval.candidate_id,
-                    status=ValidationStatus.VALIDATION_ERROR,
-                    reason=f"Member 4 validation service HTTP error {resp.status_code}: {resp.text}",
-                    validator_name="Member4HTTPService",
-                )
+
+            logger.error(
+                "Member 4 returned HTTP %s: %s",
+                response.status_code,
+                response.text,
+            )
+
+            errors = (
+                data.get("errors", data.get("detail", data))
+                if isinstance(data, dict)
+                else data
+            )
+
+            return ValidationResult(
+                candidate_id=candidate_eval.candidate_id,
+                status=ValidationStatus.VALIDATION_ERROR,
+                reason=(
+                    f"Member 4 returned HTTP {response.status_code}: "
+                    f"{errors}"
+                ),
+                validator_name="Member4HTTPService",
+            )
+
         except requests.exceptions.RequestException as exc:
-            logger.warning("Could not reach Member 4 validation service at %s: %s", url, exc)
+            logger.warning(
+                "Member 4 is unreachable at %s: %s", url, exc
+            )
+
             return ValidationResult(
                 candidate_id=candidate_eval.candidate_id,
                 status=ValidationStatus.VALIDATION_UNAVAILABLE,
