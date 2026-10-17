@@ -29,8 +29,12 @@ export default function MaintenanceRequestPage() {
     try {
       const result = await getMaintenanceRequests()
       setRequests(result.requests)
-    } catch {
-      setRequestsError('Could not load saved requests. Check the backend connection.')
+    } catch (err) {
+      setRequestsError(
+        err instanceof Error
+          ? `Could not load saved requests. ${err.message}`
+          : 'Could not load saved requests. Check the backend connection.',
+      )
     } finally {
       setLoadingRequests(false)
     }
@@ -63,10 +67,12 @@ export default function MaintenanceRequestPage() {
 
       // Refresh the table after saving
       await loadRequests()
-    } catch {
+    } catch (err) {
       setError(true)
       setMessage(
-        'Could not submit the request. Check whether the backend is running.',
+        err instanceof Error
+          ? err.message
+          : 'Could not submit the request. Check whether the backend is running.',
       )
     } finally {
       setLoading(false)

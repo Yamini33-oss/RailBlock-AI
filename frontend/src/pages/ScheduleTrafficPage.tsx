@@ -18,13 +18,6 @@ const priorityStyles: Record<string, string> = {
   Low: 'bg-green-500/10 text-green-400',
 }
 
-const priorityWidth: Record<string, string> = {
-  Critical: 'bg-red-500',
-  High: 'bg-amber-500',
-  Medium: 'bg-blue-500',
-  Low: 'bg-green-500',
-}
-
 export default function ScheduleTrafficPage() {
   const [requests, setRequests] = useState<SavedMaintenanceRequest[]>([])
   const [loading, setLoading] = useState(true)

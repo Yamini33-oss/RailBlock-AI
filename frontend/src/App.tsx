@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout'
 import Dashboard from './pages/Dashboard'
-import PlaceholderPage from './pages/PlaceholderPage'
 import MaintenanceRequestPage from './pages/MaintenanceRequestPage'
 import ScheduleTrafficPage from './pages/ScheduleTrafficPage'
 import BlockPlanningPage from './pages/BlockPlanningPage'

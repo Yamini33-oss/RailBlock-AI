@@ -323,6 +323,16 @@ export default function BlockPlanningPage() {
             </div>
           </div>
 
+          {String(result.validation?.validator_used ?? '')
+            .toLowerCase()
+            .includes('mock') && (
+            <p className="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-400">
+              Validation here came from the mock validator only, not the real
+              Member 4 conflict checker. This is a student demonstration result,
+              not an approved railway instruction.
+            </p>
+          )}
+
           {alternatives.length > 0 && (
             <div className="mt-5">
               <h3 className="font-bold">Alternative Windows</h3>
