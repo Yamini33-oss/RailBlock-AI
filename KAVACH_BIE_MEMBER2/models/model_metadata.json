@@ -3,7 +3,7 @@
   "data_source": "synthetic_railway_demo",
   "prediction_target": "historical_delay_minutes",
   "target_description": "Expected average train delay in minutes for services operating across the specified track section during or near the maintenance window, estimated from historical corridor delay dynamics, traffic density, and schedule density.",
-  "training_timestamp": "2026-10-14T11:41:44.237353",
+  "training_timestamp": "2026-10-17T22:28:01.286769",
   "random_seed": 42,
   "train_rows": 1680,
   "test_rows": 420,

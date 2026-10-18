@@ -31,8 +31,9 @@ class Settings(BaseSettings):
     MOCK_FIREBASE: bool = True
 
     # External Integration Endpoints
-    MEMBER2_PREDICTION_URL: str = "http://localhost:8002/api/prediction/disruption"
-    MEMBER4_VALIDATION_URL: str = "http://localhost:8004/api/validation/validate"
+    MEMBER2_PREDICTION_URL: str = "http://localhost:8005/predict"
+    MEMBER4_BASE_URL: str = "http://localhost:8004"
+    MEMBER4_VALIDATION_URL: str = "http://localhost:8004/validate"
 
     # Optimization Defaults
     SOLVER_TIME_LIMIT_SECONDS: float = 10.0

@@ -20,6 +20,12 @@ from typing import List
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+import sys
+from pathlib import Path
+
+_MEMBER2_DIR = Path(__file__).resolve().parent
+if str(_MEMBER2_DIR) not in sys.path:
+    sys.path.insert(0, str(_MEMBER2_DIR))
 
 from config import MODEL_FILE, MODEL_VERSION
 from predict_delay import (

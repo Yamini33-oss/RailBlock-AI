@@ -59,6 +59,16 @@ class OptimizationApiRequest(BaseModel):
     # Solver configuration
     config: Optional[PlanningConfig] = None
 
+    # Integration toggles: if True, calls real Member 2 / Member 4 services
+    use_real_validator: Optional[bool] = Field(
+        default=None,
+        description="If True, validate candidates using live Member 4 service. Defaults to env var OPTIMIZER_USE_MEMBER4 or False.",
+    )
+    use_real_predictor: Optional[bool] = Field(
+        default=None,
+        description="If True, query live Member 2 prediction service. Defaults to env var OPTIMIZER_USE_MEMBER2 or False.",
+    )
+
 
 @optimizer_router.get("/health", status_code=status.HTTP_200_OK)
 def health_check() -> Dict[str, Any]:
@@ -141,10 +151,52 @@ def recommend_maintenance_window(payload: OptimizationApiRequest) -> Optimizatio
         "section_data": section_records or [],
     }
 
+    import os
+    from optimizer.data_adapter import BaselineDelayPredictor, Member2PredictorAdapter
+    from optimizer.member2_client import predict_candidate_window
+    from optimizer.validation_client import Member4HTTPClient, MockMember4Validator
+
+    # Determine validator: Member4HTTPClient or MockMember4Validator
+    use_member4 = payload.use_real_validator
+    if use_member4 is None:
+        use_member4 = os.getenv("OPTIMIZER_USE_MEMBER4", "false").lower() in ("true", "1", "yes")
+
+    if use_member4:
+        member4_base_url = os.getenv("MEMBER4_BASE_URL", "http://127.0.0.1:8004")
+        validator = Member4HTTPClient(
+            base_url=member4_base_url,
+            required_resources=req.required_resources or ["Maintenance Team"],
+        )
+    else:
+        validator = MockMember4Validator()
+
+    # Determine predictor: Member2PredictorAdapter or BaselineDelayPredictor
+    use_member2 = payload.use_real_predictor
+    if use_member2 is None:
+        use_member2 = os.getenv("OPTIMIZER_USE_MEMBER2", "false").lower() in ("true", "1", "yes")
+
+    if use_member2:
+        priority_val = req.maintenance_priority.value if hasattr(req.maintenance_priority, "value") else str(req.maintenance_priority)
+        def member2_predictor(candidate_window, candidate_train_data, candidate_traffic_data):
+            return predict_candidate_window(
+                candidate_window,
+                candidate_train_data,
+                candidate_traffic_data,
+                maintenance_priority=priority_val,
+            )
+        predictor = Member2PredictorAdapter(
+            predictor_callable=member2_predictor,
+            fallback_to_baseline=True,
+        )
+    else:
+        predictor = BaselineDelayPredictor()
+
     response = optimize_maintenance_window(
         request=req,
         input_data=input_data,
         config=payload.config or PlanningConfig(),
+        predictor=predictor,
+        validator=validator,
     )
 
     return response

@@ -19,6 +19,12 @@ from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError as FastAPIRequestError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, StrictInt, field_validator, model_validator
+import sys
+from pathlib import Path
+
+_MEMBER4_DIR = Path(__file__).resolve().parent
+if str(_MEMBER4_DIR) not in sys.path:
+    sys.path.insert(0, str(_MEMBER4_DIR))
 
 import main
 

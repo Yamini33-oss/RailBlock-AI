@@ -76,7 +76,7 @@ class MockMember4Validator(ConflictValidationInterface):
             return ValidationResult(
                 candidate_id=candidate_eval.candidate_id,
                 status=ValidationStatus.CONFLICT,
-                reason="Candidate rejected by the mock validation rule.",
+                reason=f"Candidate {candidate_eval.candidate_id} rejected by the mock validation rule.",
                 conflict_details=[
                     f"Simulated conflict for {candidate_eval.candidate_id}"
                 ],
@@ -91,8 +91,8 @@ class MockMember4Validator(ConflictValidationInterface):
                 candidate_id=candidate_eval.candidate_id,
                 status=ValidationStatus.CONFLICT,
                 reason=(
-                    "Affected train count exceeds the mock validator's "
-                    f"limit of {self.max_allowed_affected_trains}."
+                    f"Affected train count ({candidate_eval.affected_train_count}) "
+                    f"exceeds maximum allowed threshold of {self.max_allowed_affected_trains}."
                 ),
                 conflict_details=candidate_eval.affected_trains,
                 validator_name="MockMember4Validator",
@@ -167,15 +167,23 @@ class Member4HTTPClient(ConflictValidationInterface):
                     else:
                         reasons = []
 
+                    if not reasons and status_value == "VALID":
+                        default_reason = "Passed Member 4 conflict validation."
+                    else:
+                        default_reason = "Member 4 returned a response."
+
                     reason = (
                         data.get("reason")
                         or "; ".join(str(item) for item in reasons)
                         or data.get("message")
-                        or "Member 4 returned a response."
+                        or default_reason
                     )
 
                     conflict_details = (
-                        data.get("conflict_details") or reasons or None
+                        data.get("conflict_details")
+                        or (data.get("affected_trains") if data.get("affected_trains") else None)
+                        or reasons
+                        or None
                     )
 
                     validator_name = data.get(

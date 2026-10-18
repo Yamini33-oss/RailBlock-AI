@@ -15,7 +15,7 @@
   },
   "validation": {
     "status": "VALID",
-    "reason": "No operational headway or interlocking conflicts detected by Member 4 validator.",
+    "reason": "Passed mock validation only.",
     "validator_used": "MockMember4Validator",
     "validation_attempts": 1
   },
@@ -74,12 +74,12 @@
     "Recommended maintenance block on section SEC-01 from 2026-10-15 11:00 to 2026-10-15 12:00 (60 minutes).",
     "Optimization score is 0.0435 (predicted disruption delay: 0.5 mins, affected trains: 0, traffic density: 0.15).",
     "Candidate CW-009 (11:00-12:00) passed operational validation.",
-    "Solution mathematically proven OPTIMAL by Google OR-Tools CP-SAT in 0.004s."
+    "Solution mathematically proven OPTIMAL by Google OR-Tools CP-SAT in 0.007s."
   ],
   "solver": {
     "status": "OPTIMAL",
     "objective_score": 0.0435,
-    "wall_time_seconds": 0.0044,
+    "wall_time_seconds": 0.0068,
     "is_optimal": true
   }
 }
